@@ -1144,7 +1144,7 @@ function initializeSearch() {
     if (currentSuggestions[index]) {
       searchInput.value = currentSuggestions[index].name;
       hideSuggestions();
-      performSearch(currentSuggestions[index].name);
+   performSearch(currentSuggestions[index].name);
     }
   }
 
