@@ -1,18 +1,9 @@
-web: node index.js
-const express = require('express');
-const path = require('path');
+
+import express from "express";
 const app = express();
-app.use(express.static("build"));
-const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("App is running");
+  res.send("Server is running");
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build/project.html"));
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+export default app;

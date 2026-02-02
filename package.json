@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "mkdir build && copy *.html build\\ && copy *.css build\\ && copy *.js build\\",
+    "build": "if exist build rmdir /s /q build && mkdir build && copy project.html build\\index.html && copy *.css build\\ && copy *.js build\\ && copy *.jpg build\\ && copy *.png build\\ && copy *.webp build\\ && copy *.gif build\\ && copy *.svg build\\",
     "web": "node index.js"
   },
   "dependencies": {
