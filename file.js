@@ -1,3 +1,7 @@
+function getCSSVariable(variable) {
+  return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM loaded, initializing features...");
   // Mobile Menu Toggle
@@ -107,6 +111,55 @@ document.addEventListener("DOMContentLoaded", function () {
         "aria-label",
         theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode",
       );
+    }
+    // Update chart colors when theme changes
+    updateChartColors(theme);
+  }
+
+  function updateChartColors(theme) {
+    const textColor = theme === "dark" ? "#f0f0f0" : "#333333";
+    const gridColor = theme === "dark" ? "rgba(139, 69, 19, 0.1)" : "rgba(139, 69, 19, 0.1)";
+
+    // Update writing dates chart
+    const writingDatesCtx = document.getElementById("writingDatesChart");
+    if (writingDatesCtx && writingDatesCtx.chart) {
+      writingDatesCtx.chart.options.plugins.legend.labels.color = textColor;
+      writingDatesCtx.chart.options.plugins.tooltip.backgroundColor = theme === "dark" ? "#2d2d2d" : "#ffffff";
+      writingDatesCtx.chart.options.plugins.tooltip.titleColor = theme === "dark" ? "#e0c097" : "#8B4513";
+      writingDatesCtx.chart.options.plugins.tooltip.bodyColor = textColor;
+      writingDatesCtx.chart.options.scales.y.ticks.color = textColor;
+      writingDatesCtx.chart.options.scales.x.ticks.color = textColor;
+      writingDatesCtx.chart.options.scales.y.grid.color = gridColor;
+      writingDatesCtx.chart.options.scales.x.grid.color = gridColor;
+      writingDatesCtx.chart.update();
+    }
+
+    // Update interconnections chart
+    const interconnectionsCtx = document.getElementById("interconnectionsChart");
+    if (interconnectionsCtx && interconnectionsCtx.chart) {
+      interconnectionsCtx.chart.options.plugins.legend.labels.color = textColor;
+      interconnectionsCtx.chart.options.plugins.tooltip.backgroundColor = theme === "dark" ? "#2d2d2d" : "#ffffff";
+      interconnectionsCtx.chart.options.plugins.tooltip.titleColor = theme === "dark" ? "#e0c097" : "#8B4513";
+      interconnectionsCtx.chart.options.plugins.tooltip.bodyColor = textColor;
+      interconnectionsCtx.chart.options.scales.r.ticks.color = textColor;
+      interconnectionsCtx.chart.options.scales.r.grid.color = gridColor;
+      interconnectionsCtx.chart.options.scales.r.angleLines.color = gridColor;
+      interconnectionsCtx.chart.options.scales.r.pointLabels.color = textColor;
+      // Update point border colors for all datasets
+      interconnectionsCtx.chart.data.datasets.forEach(function (dataset) {
+        dataset.pointBorderColor = getCSSVariable('--text-color');
+      });
+      interconnectionsCtx.chart.update();
+    }
+
+    // Update six prophets chart
+    const sixProphetsCtx = document.getElementById("sixProphetsChart");
+    if (sixProphetsCtx && sixProphetsCtx.chart) {
+      sixProphetsCtx.chart.options.plugins.legend.labels.color = textColor;
+      sixProphetsCtx.chart.options.plugins.tooltip.backgroundColor = theme === "dark" ? "#2d2d2d" : "#ffffff";
+      sixProphetsCtx.chart.options.plugins.tooltip.titleColor = theme === "dark" ? "#e0c097" : "#8B4513";
+      sixProphetsCtx.chart.options.plugins.tooltip.bodyColor = textColor;
+      sixProphetsCtx.chart.update();
     }
   }
 
@@ -473,7 +526,7 @@ function initializeCharts() {
             backgroundColor: "rgba(139, 69, 19, 0.2)",
             borderWidth: 2,
             pointBackgroundColor: "var(--primary-color)",
-            pointBorderColor: "var(--text-color)",
+            pointBorderColor: getCSSVariable('--text-color'),
             pointBorderWidth: 2,
           },
           {
@@ -483,7 +536,7 @@ function initializeCharts() {
             backgroundColor: "rgba(255, 228, 225, 0.2)",
             borderWidth: 2,
             pointBackgroundColor: "#FFE4E1",
-            pointBorderColor: "var(--text-color)",
+            pointBorderColor: getCSSVariable('--text-color'),
             pointBorderWidth: 2,
           },
           {
@@ -493,7 +546,7 @@ function initializeCharts() {
             backgroundColor: "rgba(212, 175, 55, 0.2)",
             borderWidth: 2,
             pointBackgroundColor: "var(--secondary-color)",
-            pointBorderColor: "var(--text-color)",
+            pointBorderColor: getCSSVariable('--text-color'),
             pointBorderWidth: 2,
           },
           {
@@ -503,7 +556,7 @@ function initializeCharts() {
             backgroundColor: "rgba(240, 255, 240, 0.2)",
             borderWidth: 2,
             pointBackgroundColor: "#F0FFF0",
-            pointBorderColor: "var(--text-color)",
+            pointBorderColor: getCSSVariable('--text-color'),
             pointBorderWidth: 2,
           },
           {
@@ -513,7 +566,7 @@ function initializeCharts() {
             backgroundColor: "rgba(230, 230, 250, 0.2)",
             borderWidth: 2,
             pointBackgroundColor: "#E6E6FA",
-            pointBorderColor: "var(--text-color)",
+            pointBorderColor: getCSSVariable('--text-color'),
             pointBorderWidth: 2,
           },
           {
@@ -523,7 +576,7 @@ function initializeCharts() {
             backgroundColor: "rgba(34, 139, 34, 0.2)",
             borderWidth: 2,
             pointBackgroundColor: "#228B22",
-            pointBorderColor: "var(--text-color)",
+            pointBorderColor: getCSSVariable('--text-color'),
             pointBorderWidth: 2,
           },
           {
@@ -533,7 +586,7 @@ function initializeCharts() {
             backgroundColor: "rgba(221, 160, 221, 0.2)",
             borderWidth: 2,
             pointBackgroundColor: "#DDA0DD",
-            pointBorderColor: "var(--text-color)",
+            pointBorderColor: getCSSVariable('--text-color'),
             pointBorderWidth: 2,
           },
           {
@@ -543,7 +596,7 @@ function initializeCharts() {
             backgroundColor: "rgba(255, 99, 71, 0.2)",
             borderWidth: 2,
             pointBackgroundColor: "#FF6347",
-            pointBorderColor: "var(--text-color)",
+            pointBorderColor: getCSSVariable('--text-color'),
             pointBorderWidth: 2,
           },
           {

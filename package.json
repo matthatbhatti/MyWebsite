@@ -2,10 +2,11 @@
   "name": "project",
   "version": "1.0.0",
   "description": "A Node.js application",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "mkdir build && copy *.html build\\ && copy *.css build\\ && copy *.js build\\",
+    "build": "node build.js",
     "web": "node index.js"
   },
   "dependencies": {
