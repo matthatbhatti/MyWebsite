@@ -1174,9 +1174,20 @@ footer a:hover {
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 0 80px;
   max-width: 1200px;
   margin: 0 auto;
+  overflow-x: hidden; /* no horizontal bar */
+  padding: 0;         /* no spacing bar */
+}
+                                       .book-details-container {
+  padding: 0; /* removes the spacing bar effect */
+}
+                              .comparison-grid, .charts-container, .book-details-container {
+  overflow-x: auto;
+  overflow-y: visible;
+}
+                                                                                  .book-details-container {
+  overflow-x: hidden; /* hides horizontal scrollbar */
 }
 
 .book-details-navigation {

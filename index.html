@@ -17,6 +17,107 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <style>
+      /* Critical CSS - Above the fold styles */
+      :root {
+        --primary-color: #8B4513;
+        --secondary-color: #D4AF37;
+        --accent-color: #8e1d32;
+        --text-color: #333333;
+        --bg-color: #f9f9f7;
+        --card-bg: #ffffff;
+        --nav-bg: rgba(255, 255, 255, 0.95);
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --font-main: 'Poppins', sans-serif;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; overflow-x: hidden; }
+      body {
+        font-family: var(--font-main);
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--bg-color);
+        overflow-x: hidden;
+      }
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        background-color: var(--nav-bg);
+        box-shadow: var(--shadow);
+        z-index: 1000;
+        padding: 1rem 0;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        letter-spacing: 1px;
+      }
+
+      .hero {
+        position: relative;
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 2rem;
+        overflow: hidden;
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images.webp') no-repeat center center/cover;
+        color: #fff;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        max-width: 600px;
+      }
+
+      .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
     <link rel="stylesheet" href="design.css" />
     <link rel="stylesheet" href="scrollbar.css" />
     <!-- Preload critical resources -->
@@ -91,6 +192,7 @@
             alt="Social injustice and oppression"
             class="hover-zoom"
             loading="lazy"
+            decoding="async"
           />
           <p>
             Amos: Seek for instances of community injustice, such as mistreating
@@ -103,6 +205,7 @@
             alt="Neglect of spiritual duties and idolatry"
             class="hover-zoom"
             loading="lazy"
+            decoding="async"
           />
           <p>
             Joel: In times of crisis, watch out for spiritual carelessness and a
@@ -790,21 +893,24 @@
           <div class="question-header" onclick="toggleAnswer(1)">
             <span class="arrow-icon" id="arrow1">+</span>
             <div class="question-text">
-              <strong>Question 1:</strong> What patterns do you see in how God
-              responds to sin and repentance across these six prophets?
+              <strong>Question 1:</strong> <span id="question1-text" contenteditable="false">What patterns do you see in how God responds to sin and repentance across these twelve prophets?</span>
+              <button class="edit-btn" onclick="editQuestion(1)" title="Edit Question">✏️</button>
             </div>
           </div>
           <div class="answer" id="answer1">
             <p>
-              Through these six prophets, God exposed sin to the world and
-              warned the world of the coming judgment and also provided the
-              opportunity to repent for sin before the judgment occurred. For
-              those who sincerely repent from their sin, God shows mercy and
-              restores them. However, for those who continue to sin without
-              repentance, judgment is assured. These six prophets highlight
-              God's love through the willingness to forgive the sinner and also
-              His righteousness through the conviction of sin and punishment of
-              sin.
+              <span id="answer1-text" contenteditable="false">
+                Through these twelve prophets, God exposed sin to the world and
+                warned the world of the coming judgment and also provided the
+                opportunity to repent for sin before the judgment occurred. For
+                those who sincerely repent from their sin, God shows mercy and
+                restores them. However, for those who continue to sin without
+                repentance, judgment is assured. These twelve prophets highlight
+                God's love through the willingness to forgive the sinner and also
+                His righteousness through the conviction of sin and punishment of
+                sin.
+              </span>
+              <button class="edit-btn" onclick="editAnswer(1)" title="Edit Answer">✏️</button>
             </p>
           </div>
         </div>
@@ -812,17 +918,67 @@
           <div class="question-header" onclick="toggleAnswer(2)">
             <span class="arrow-icon" id="arrow2">+</span>
             <div class="question-text">
-              <strong>Question 2:</strong> What impact has studying these
-              prophets had on your personal relationship with God and ministry?
+              <strong>Question 2:</strong> <span id="question2-text" contenteditable="false">What impact has studying these prophets had on your personal relationship with God and ministry?</span>
+              <button class="edit-btn" onclick="editQuestion(2)" title="Edit Question">✏️</button>
             </div>
           </div>
           <div class="answer" id="answer2">
             <p>
-              During my study of the prophets, I gained a greater understanding
-              of God's holiness, justice, and mercy. I learned that genuine
-              repentance is from the heart and is not just a matter of action. I
-              have been strengthened in my faith and motivated to obey God and
-              serve those in need with compassion and responsibility.
+              <span id="answer2-text" contenteditable="false">
+                In every one of the Minor Prophets' messages, God makes a point of exposing the sins of His people and encouraging them to repent prior to issuing judgment. He warns them that the continued disobedience to His commandments will result in punishment, thereby demonstrating His holiness and justice. When His people sincerely seek His forgiveness and restoration, God will respond with mercy towards them. However, once a people rejects the call to repentance, they can be assured that judgment will come; it will be unavoidable and certain. Taken collectively, these writings clearly indicate that God can be both patient and steadfast in maintaining the balance between His mercy and justice.
+              </span>
+              <button class="edit-btn" onclick="editAnswer(2)" title="Edit Answer">✏️</button>
+            </p>
+          </div>
+        </div>
+        <div class="question-block">
+          <div class="question-header" onclick="toggleAnswer(3)">
+            <span class="arrow-icon" id="arrow3">+</span>
+            <div class="question-text">
+              <strong>Question 3:</strong> <span id="question3-text" contenteditable="false">How do the Minor Prophets demonstrate God's unchanging character throughout history?</span>
+              <button class="edit-btn" onclick="editQuestion(3)" title="Edit Question">✏️</button>
+            </div>
+          </div>
+          <div class="answer" id="answer3">
+            <p>
+              <span id="answer3-text" contenteditable="false">
+                The Minor Prophets consistently reveal God's unchanging character across different time periods and circumstances. From Hosea's demonstration of covenant love to Malachi's call for covenant faithfulness, God's holiness, justice, mercy, and sovereignty remain constant. Despite Israel's repeated unfaithfulness, God remains faithful to His promises and character, showing that He is the same yesterday, today, and forever.
+              </span>
+              <button class="edit-btn" onclick="editAnswer(3)" title="Edit Answer">✏️</button>
+            </p>
+          </div>
+        </div>
+        <div class="question-block">
+          <div class="question-header" onclick="toggleAnswer(4)">
+            <span class="arrow-icon" id="arrow4">+</span>
+            <div class="question-text">
+              <strong>Question 4:</strong> <span id="question4-text" contenteditable="false">What practical applications can we draw from the Minor Prophets for today's church and society?</span>
+              <button class="edit-btn" onclick="editQuestion(4)" title="Edit Question">✏️</button>
+            </div>
+          </div>
+          <div class="answer" id="answer4">
+            <p>
+              <span id="answer4-text" contenteditable="false">
+                The Minor Prophets offer timeless applications for modern believers. They call us to social justice (Amos), genuine worship (Malachi), care for the vulnerable (Micah), and faithfulness in ministry (Haggai). They warn against spiritual apathy (Zephaniah), pride (Obadiah), and injustice (Habakkuk), while encouraging repentance, faith, and hope in God's restoration promises.
+              </span>
+              <button class="edit-btn" onclick="editAnswer(4)" title="Edit Answer">✏️</button>
+            </p>
+          </div>
+        </div>
+        <div class="question-block">
+          <div class="question-header" onclick="toggleAnswer(5)">
+            <span class="arrow-icon" id="arrow5">+</span>
+            <div class="question-text">
+              <strong>Question 5:</strong> <span id="question5-text" contenteditable="false">How do the themes of judgment and mercy work together in the Minor Prophets?</span>
+              <button class="edit-btn" onclick="editQuestion(5)" title="Edit Question">✏️</button>
+            </div>
+          </div>
+          <div class="answer" id="answer5">
+            <p>
+              <span id="answer5-text" contenteditable="false">
+                The Minor Prophets beautifully balance God's judgment and mercy. Judgment serves as a warning to call people to repentance (Joel 2:12-13), while mercy is extended to those who turn from their sin (Jonah 3:10). God's justice demands that sin be punished, but His mercy provides opportunity for repentance. This tension demonstrates God's perfect character - He is both just and the justifier of those who have faith.
+              </span>
+              <button class="edit-btn" onclick="editAnswer(5)" title="Edit Answer">✏️</button>
             </p>
           </div>
         </div>

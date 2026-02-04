@@ -4,6 +4,20 @@ function getCSSVariable(variable) {
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM loaded, initializing features...");
+
+  // Register Service Worker for caching
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js')
+        .then(function(registration) {
+          console.log('Service Worker registered successfully:', registration.scope);
+        })
+        .catch(function(error) {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+
   // Mobile Menu Toggle
   const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
   const navLinks = document.querySelector(".nav-links");
@@ -278,6 +292,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Add share functionality
   addShareFunctionality();
+
+  // Initialize editable content
+  initializeEditableContent();
 });
 
 function initializeBookNavigation() {
@@ -1365,27 +1382,6 @@ function addLoadingFeatures() {
 
 // Enhanced accessibility features
 function enhanceAccessibility() {
-  // Add skip link
-  const skipLink = document.createElement("a");
-  skipLink.href = "#main-content";
-  skipLink.className = "skip-link";
-  skipLink.textContent = "Skip to main content";
-  document.body.insertBefore(skipLink, document.body.firstChild);
-
-  // Add main content landmark
-  const hero = document.querySelector(".hero");
-  if (hero) {
-    const mainContent = document.createElement("div");
-    mainContent.id = "main-content";
-    hero.parentNode.insertBefore(mainContent, hero.nextSibling);
-
-    // Move all sections except nav and hero into main content
-    const sections = document.querySelectorAll("section");
-    sections.forEach(function (section) {
-      mainContent.appendChild(section);
-    });
-  }
-
   // Improve keyboard navigation
   const focusableElements = document.querySelectorAll(
     "button, a, input, [tabindex]",
@@ -1416,4 +1412,97 @@ function addShareFunctionality() {
       });
     }
   };
+}
+
+// Initialize editable content functionality
+function initializeEditableContent() {
+  // Load saved content from localStorage
+  loadSavedContent();
+
+  // Add CSS for edit buttons
+  const style = document.createElement('style');
+  style.textContent = `
+    .edit-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2em;
+      margin-left: 10px;
+      padding: 5px;
+      border-radius: 3px;
+      transition: background-color 0.3s;
+    }
+    .edit-btn:hover {
+      background-color: rgba(139, 69, 19, 0.1);
+    }
+    .editing {
+      border: 2px solid var(--primary-color);
+      border-radius: 4px;
+      padding: 2px;
+      background-color: rgba(139, 69, 19, 0.05);
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Edit question function
+window.editQuestion = function(questionNumber) {
+  const questionSpan = document.getElementById(`question${questionNumber}-text`);
+  const isEditing = questionSpan.contentEditable === 'true';
+
+  if (isEditing) {
+    // Save the changes
+    const newContent = questionSpan.textContent.trim();
+    localStorage.setItem(`question${questionNumber}`, newContent);
+    questionSpan.contentEditable = 'false';
+    questionSpan.classList.remove('editing');
+    alert('Question saved successfully!');
+  } else {
+    // Start editing
+    questionSpan.contentEditable = 'true';
+    questionSpan.classList.add('editing');
+    questionSpan.focus();
+  }
+};
+
+// Edit answer function
+window.editAnswer = function(answerNumber) {
+  const answerSpan = document.getElementById(`answer${answerNumber}-text`);
+  const isEditing = answerSpan.contentEditable === 'true';
+
+  if (isEditing) {
+    // Save the changes
+    const newContent = answerSpan.textContent.trim();
+    localStorage.setItem(`answer${answerNumber}`, newContent);
+    answerSpan.contentEditable = 'false';
+    answerSpan.classList.remove('editing');
+    alert('Answer saved successfully!');
+  } else {
+    // Start editing
+    answerSpan.contentEditable = 'true';
+    answerSpan.classList.add('editing');
+    answerSpan.focus();
+  }
+};
+
+// Load saved content from localStorage
+function loadSavedContent() {
+  // Load questions
+  for (let i = 1; i <= 5; i++) {
+    const savedQuestion = localStorage.getItem(`question${i}`);
+    if (savedQuestion) {
+      const questionSpan = document.getElementById(`question${i}-text`);
+      if (questionSpan) {
+        questionSpan.textContent = savedQuestion;
+      }
+    }
+
+    const savedAnswer = localStorage.getItem(`answer${i}`);
+    if (savedAnswer) {
+      const answerSpan = document.getElementById(`answer${i}-text`);
+      if (answerSpan) {
+        answerSpan.textContent = savedAnswer;
+      }
+    }
+  }
 }
